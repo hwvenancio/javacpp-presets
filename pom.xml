@@ -55,6 +55,7 @@
     <module>cuda</module>
     <module>mxnet</module>
     <module>tensorflow</module>
+    <module>bulletphysics</module>
   </modules>
 
   <prerequisites>
