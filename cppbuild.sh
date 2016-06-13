@@ -2,7 +2,7 @@
 # Scripts to build and install native C++ libraries
 set -eu
 
-[[ -z ${CMAKE:-} ]] && CMAKE=cmake
+[[ -z ${CMAKE:-} ]] && CMAKE="cmake"
 [[ -z ${MAKEJ:-} ]] && MAKEJ=4
 [[ -z ${OLDCC:-} ]] && OLDCC="gcc"
 [[ -z ${OLDCXX:-} ]] && OLDCXX="g++"
@@ -13,6 +13,10 @@ ARCH=(`uname -m | tr [A-Z] [a-z]`)
 case $KERNEL in
     darwin)
         OS=macosx
+        ;;
+    cygwin_nt-6.1)
+        OS=cygwin
+        KERNEL=windows
         ;;
     mingw32*)
         OS=windows
@@ -90,7 +94,8 @@ function download {
     mkdir -p "$TOP_PATH/downloads"
     if [[ ! -e "$TOP_PATH/downloads/$2" ]]; then
         echo "Downloading $1"
-        curl -L "$1" -o "$TOP_PATH/downloads/$2"
+        #curl -L "$1" -o "$TOP_PATH/downloads/$2"
+        wget "$1" -O "$TOP_PATH/downloads/$2" --no-check-certificate
     fi
     ln -sf "$TOP_PATH/downloads/$2" "$2"
 }

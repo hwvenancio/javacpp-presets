@@ -12,6 +12,7 @@ download https://github.com/bulletphysics/bullet3/archive/$BULLET_VERSION.tar.gz
 
 mkdir -p $PLATFORM
 cd $PLATFORM
+INSTALL_PATH=`pwd`
 tar -xzvf ../bullet3-$BULLET_VERSION.tar.gz
 cd bullet3-$BULLET_VERSION
 
@@ -35,14 +36,21 @@ case $PLATFORM in
         #  -DCMAKE_BUILD_TYPE= 
         cmake . -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../../../mingw-w64-toolchain.cmake \
           -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON \
-          -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_OSX_ARCHITECTURES='i386;x86_64' \
           -DFRAMEWORK=ON \
           -DBUILD_EXTRAS=OFF -DBUILD_BULLET3=OFF \
           -DCMAKE_INSTALL_PREFIX=/Library/Frameworks -DCMAKE_INSTALL_NAME_DIR=/Library/Frameworks \
           -DCMAKE_EXE_LINKER_FLAGS="-static-libgcc -static-libstdc++" \
           -DCMAKE_BUILD_TYPE= 
-        #cd ../../build/
+        make install
+        ;;
+    linux-x86_64)
+        mkdir -p bullet-build
+        cd bullet-build
+        "$CMAKE" .. -G "Unix Makefiles" -DBUILD_SHARED_LIBS=on \
+          -DEXECUTABLE_OUTPUT_PATH="$(pwd)/../bin" -DLIBRARY_OUTPUT_PATH="$(pwd)/../bin" \
+          -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH"
+        make -j4
         make install
         ;;
     windows-x86)
