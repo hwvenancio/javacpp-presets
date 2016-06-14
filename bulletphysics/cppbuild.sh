@@ -18,31 +18,13 @@ cd bullet3-$BULLET_VERSION
 
 case $PLATFORM in
     cygwin-x86_64)
-        #"$CMAKE" . -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../../../mingw-w64-toolchain.cmake \
-        #  -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON \
-        #  -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON \
-        #  -DCMAKE_OSX_ARCHITECTURES='i386;x86_64' \
-        #  -DFRAMEWORK=ON \
-        #  -DBUILD_BULLET3=OFF \
-        #  -DBUILD_OPENGL3_DEMOS=OFF \
-        #  -DBUILD_OPENGL3_DEMOS=OFF \
-        #  -DBUILD_CPU_DEMOS=OFF -DBUILD_BULLET2_DEMOS=OFF \
-        #  -DBUILD_CPU_DEMOS=OFF -DBUILD_BULLET2_DEMOS=OFF \
-        #  -DBUILD_EXTRAS=OFF -DBUILD_BULLET3=OFF \
-        #  -DCMAKE_INSTALL_PREFIX=/Library/Frameworks -DCMAKE_INSTALL_NAME_DIR=/Library/Frameworks \
-        #  -DCMAKE_INSTALL_PREFIX=/Library/Frameworks -DCMAKE_INSTALL_NAME_DIR=/Library/Frameworks \
-        #  -DCMAKE_EXE_LINKER_FLAGS="-static-libgcc -static-libstdc++" \
-        #  -DCMAKE_EXE_LINKER_FLAGS="-static-libgcc -static-libstdc++" \
-        #  -DCMAKE_BUILD_TYPE= 
-        cmake . -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../../../mingw-w64-toolchain.cmake \
-          -DINSTALL_LIBS=ON -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_OSX_ARCHITECTURES='i386;x86_64' \
-          -DFRAMEWORK=ON \
+        cmake . -G "Unix Makefiles" -B"$(pwd)/../build-win64/" \
+          -DCMAKE_TOOLCHAIN_FILE=../../../mingw-w64-toolchain.cmake \
+          -DBUILD_SHARED_LIBS=ON \
           -DBUILD_EXTRAS=OFF -DBUILD_BULLET3=OFF \
-          -DCMAKE_INSTALL_PREFIX=/Library/Frameworks -DCMAKE_INSTALL_NAME_DIR=/Library/Frameworks \
-          -DCMAKE_EXE_LINKER_FLAGS="-static-libgcc -static-libstdc++" \
-          -DCMAKE_BUILD_TYPE= 
-        make install
+          -DCMAKE_BUILD_TYPE=Release 
+        cd ../build-win64/
+        make -j4
         ;;
     linux-x86_64)
         mkdir -p bullet-build
